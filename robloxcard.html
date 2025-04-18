@@ -60,7 +60,24 @@
       color: #aaa;
       margin-top: 15px;
     }
+    .save-btn {
+      display: block;
+      margin: 15px auto 0;
+      background: #ffcc00;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .save-btn:hover {
+      background: #e6b800;
+    }
   </style>
+  <!-- html2canvas library -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -80,12 +97,13 @@
   </div>
 
   <div class="footer">Share your card to flex 💪</div>
+  <button class="save-btn" onclick="saveCard()">Save as Image</button>
 </div>
 
 <script>
   const params = new URLSearchParams(window.location.search);
 
-  const userId = params.get('userid') || '1'; // Default to 1 if not set
+  const userId = params.get('userid') || '1';
   const username = params.get('user') || 'Username';
   const display = params.get('display') || 'DisplayName';
   const robux = parseInt(params.get('robux') || '0');
@@ -93,12 +111,12 @@
   const age = params.get('age') || '?';
   const badges = params.get('badges') || 'None';
 
-  // Load Avatar Image from Roblox API (Correct Endpoint)
+  // Load Avatar
   fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=420x420&format=Png`)
     .then(res => res.json())
     .then(data => {
       const imgUrl = data?.data?.[0]?.imageUrl;
-      document.getElementById('avatar').src = imgUrl || 'https://tr.rbxcdn.com/default-avatar.png';  // Fallback if image not found
+      document.getElementById('avatar').src = imgUrl || 'https://www.roblox.com/headshot-thumbnail/image?userId=1&width=420&height=420&format=png';
     });
 
   // Fill in Profile Data
@@ -112,6 +130,17 @@
   // Flex Meter Calculation
   const flexPercent = Math.min(100, Math.floor((robux + limiteds) / 1000));
   document.getElementById('flexFill').style.width = flexPercent + '%';
+
+  // Save Card as Image
+  function saveCard() {
+    const card = document.getElementById('profileCard');
+    html2canvas(card).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `${username}_flex_card.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
 </script>
 
 </body>
