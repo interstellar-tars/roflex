@@ -85,7 +85,7 @@
 <script>
   const params = new URLSearchParams(window.location.search);
 
-  const userId = params.get('userid') || '1'; // Default to 1 if not set
+  const userId = params.get('userid') || '1';
   const username = params.get('user') || 'Username';
   const display = params.get('display') || 'DisplayName';
   const robux = parseInt(params.get('robux') || '0');
@@ -93,11 +93,9 @@
   const age = params.get('age') || '?';
   const badges = params.get('badges') || 'None';
 
-  // Load Avatar
-  const avatarUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${userId}&width=420&height=420&format=png`;
+  const avatarUrl = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=420x420&format=Png`;
   document.getElementById('avatar').src = avatarUrl;
 
-  // Fill in Profile Data
   document.getElementById('username').textContent = `@${username}`;
   document.getElementById('displayname').textContent = display;
   document.getElementById('age').textContent = age;
@@ -105,7 +103,6 @@
   document.getElementById('limiteds').textContent = limiteds.toLocaleString();
   document.getElementById('badges').textContent = badges;
 
-  // Flex Meter
   const flexPercent = Math.min(100, Math.floor((robux + limiteds) / 1000));
   document.getElementById('flexFill').style.width = flexPercent + '%';
 </script>
