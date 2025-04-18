@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roblox Flex Card</title>
+  <style>
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #222;
+      border-radius: 15px;
+      width: 350px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 2px solid #ffcc00;
+    }
+    .card img {
+      display: block;
+      margin: 0 auto 15px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid white;
+    }
+    h2, h3 {
+      text-align: center;
+      margin: 5px 0;
+    }
+    .stat {
+      margin: 10px 0;
+    }
+    .label {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+    .flex-meter {
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 18px;
+      margin-top: 10px;
+    }
+    .flex-fill {
+      height: 100%;
+      background: linear-gradient(to right, #00ffcc, #00ff99);
+      width: 50%;
+    }
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="profileCard">
+  <img id="avatar" src="" alt="Avatar">
+  <h2 id="username">@Username</h2>
+  <h3 id="displayname">Display Name</h3>
+
+  <div class="stat"><span class="label">Account Age:</span> <span id="age">?</span> years</div>
+  <div class="stat"><span class="label">Robux:</span> <span id="robux">?</span> R$</div>
+  <div class="stat"><span class="label">Limiteds Value:</span> <span id="limiteds">?</span> R$</div>
+  <div class="stat"><span class="label">Rare Badges:</span> <span id="badges">None</span></div>
+
+  <div class="stat"><span class="label">Flex Meter:</span></div>
+  <div class="flex-meter">
+    <div class="flex-fill" id="flexFill"></div>
+  </div>
+
+  <div class="footer">Share your card to flex 💪</div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  const user = params.get('user') || 'Username';
+  const display = params.get('display') || 'DisplayName';
+  const robux = parseInt(params.get('robux') || '0');
+  const limiteds = parseInt(params.get('limiteds') || '0');
+  const age = params.get('age') || '?';
+  const badges = params.get('badges') || 'None';
+
+  const avatarImg = `https://www.roblox.com/headshot-thumbnail/image?userId=${user}&width=420&height=420&format=png`;
+
+  document.getElementById('avatar').src = avatarImg;
+  document.getElementById('username').textContent = `@${user}`;
+  document.getElementById('displayname').textContent = display;
+  document.getElementById('age').textContent = age;
+  document.getElementById('robux').textContent = robux.toLocaleString();
+  document.getElementById('limiteds').textContent = limiteds.toLocaleString();
+  document.getElementById('badges').textContent = badges;
+
+  const flexPercent = Math.min(100, Math.floor((robux + limiteds) / 1000));
+  document.getElementById('flexFill').style.width = flexPercent + '%';
+</script>
+
+</body>
+</html>
