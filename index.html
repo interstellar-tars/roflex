@@ -3,108 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roblox Flex Card</title>
+  <title>Flex Card Link Builder</title>
   <style>
     body {
-      background: #121212;
+      background: #111;
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
+      padding: 40px 20px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
-      margin: 0;
     }
-    .card {
-      background: #222;
-      border-radius: 15px;
-      width: 350px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      border: 2px solid #ffcc00;
-    }
-    .card img {
-      display: block;
-      margin: 0 auto 15px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid white;
-    }
-    h2, h3 {
-      text-align: center;
-      margin: 5px 0;
-    }
-    .stat {
-      margin: 10px 0;
-    }
-    .label {
+    h1 {
+      margin-bottom: 20px;
       color: #ffcc00;
-      font-weight: bold;
     }
-    .flex-meter {
-      background: #444;
-      border-radius: 10px;
-      overflow: hidden;
-      height: 18px;
-      margin-top: 10px;
+    .builder {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+      max-width: 500px;
+      width: 100%;
     }
-    .flex-fill {
-      height: 100%;
-      background: linear-gradient(to right, #00ffcc, #00ff99);
-      width: 50%;
-    }
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #aaa;
+    label {
+      display: block;
       margin-top: 15px;
+      font-weight: bold;
+      color: #ddd;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 5px;
+      background: #333;
+      color: #fff;
+    }
+    #output {
+      margin-top: 20px;
+      background: #222;
+      padding: 10px;
+      border-radius: 6px;
+      word-break: break-all;
+      color: #0f0;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ffe066;
     }
   </style>
 </head>
 <body>
 
-<div class="card" id="profileCard">
-  <img id="avatar" src="" alt="Avatar">
-  <h2 id="username">@Username</h2>
-  <h3 id="displayname">Display Name</h3>
+  <h1>Roblox Flex Card Link Builder</h1>
+  <div class="builder">
+    <label>User ID (numeric):</label>
+    <input id="userid" placeholder="e.g. 261">
 
-  <div class="stat"><span class="label">Account Age:</span> <span id="age">?</span> years</div>
-  <div class="stat"><span class="label">Robux:</span> <span id="robux">?</span> R$</div>
-  <div class="stat"><span class="label">Limiteds Value:</span> <span id="limiteds">?</span> R$</div>
-  <div class="stat"><span class="label">Rare Badges:</span> <span id="badges">None</span></div>
+    <label>Username:</label>
+    <input id="user" placeholder="e.g. builderman">
 
-  <div class="stat"><span class="label">Flex Meter:</span></div>
-  <div class="flex-meter">
-    <div class="flex-fill" id="flexFill"></div>
+    <label>Display Name:</label>
+    <input id="display" placeholder="e.g. Builderman">
+
+    <label>Robux:</label>
+    <input id="robux" placeholder="e.g. 99999">
+
+    <label>Limiteds Value:</label>
+    <input id="limiteds" placeholder="e.g. 500000">
+
+    <label>Account Age (years):</label>
+    <input id="age" placeholder="e.g. 16">
+
+    <label>Badges (comma separated):</label>
+    <input id="badges" placeholder="e.g. Veteran,Administrator">
+
+    <button onclick="generateLink()">Generate Link</button>
+
+    <div id="output"></div>
   </div>
 
-  <div class="footer">Share your card to flex 💪</div>
-</div>
+  <script>
+    function generateLink() {
+      const base = "robloxcard.html";
+      const userid = document.getElementById("userid").value.trim();
+      const user = encodeURIComponent(document.getElementById("user").value.trim());
+      const display = encodeURIComponent(document.getElementById("display").value.trim());
+      const robux = document.getElementById("robux").value.trim();
+      const limiteds = document.getElementById("limiteds").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const badges = encodeURIComponent(document.getElementById("badges").value.trim());
 
-<script>
-  const params = new URLSearchParams(window.location.search);
+      if (!userid || !user) {
+        document.getElementById("output").innerText = "User ID and Username are required.";
+        return;
+      }
 
-  const user = params.get('user') || 'Username';
-  const display = params.get('display') || 'DisplayName';
-  const robux = parseInt(params.get('robux') || '0');
-  const limiteds = parseInt(params.get('limiteds') || '0');
-  const age = params.get('age') || '?';
-  const badges = params.get('badges') || 'None';
-
-  const avatarImg = `https://www.roblox.com/headshot-thumbnail/image?userId=${user}&width=420&height=420&format=png`;
-
-  document.getElementById('avatar').src = avatarImg;
-  document.getElementById('username').textContent = `@${user}`;
-  document.getElementById('displayname').textContent = display;
-  document.getElementById('age').textContent = age;
-  document.getElementById('robux').textContent = robux.toLocaleString();
-  document.getElementById('limiteds').textContent = limiteds.toLocaleString();
-  document.getElementById('badges').textContent = badges;
-
-  const flexPercent = Math.min(100, Math.floor((robux + limiteds) / 1000));
-  document.getElementById('flexFill').style.width = flexPercent + '%';
-</script>
+      const url = `${base}?userid=${userid}&user=${user}&display=${display}&robux=${robux}&limiteds=${limiteds}&age=${age}&badges=${badges}`;
+      document.getElementById("output").innerText = url;
+    }
+  </script>
 
 </body>
 </html>
